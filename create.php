@@ -15,9 +15,7 @@ $date = date('y-m-d');
 
 $image_name = $_FILES['picture']['name'];
 $image_tmp_name = ($_FILES['picture']['tmp_name']);
-
 $folder = "./img/" . $image_name;
-
 move_uploaded_file($image_tmp_name, $folder);
 
 //Database connection configuration 
@@ -34,16 +32,17 @@ $result = mysqli_query($con,"INSERT INTO products (title, picture, price, deta)
 //Close connection
 mysqli_close($con);    
 
-//The Response 
-$response = array();
-if ($result) {
-    $response["success"] = 1;
-    $response["product"] = "success.";
+//The Response
+if ($result)   
+    {
     header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
-    echo json_encode($response);    
-} else {
-    $response["success"] = 0;
-    $response["product"] = "Oops! error";
+
+    echo json_encode(array('massage' => 'products record inserted', 'products' => true));
+    
+    }
+else 
+    {
     header($_SERVER['SERVER_PROTOCOL'].' 400 Bad Request');
-    echo json_encode($response);
-}
+
+    echo json_encode(array('massage' => 'products record not inserted', 'products' => false));
+    }
